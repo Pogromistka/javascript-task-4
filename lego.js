@@ -39,27 +39,34 @@ exports.query = function (collection) {
  */
 exports.select = function () {
 
-    var selectedCol = [];
-    var remarkCol;
     var fields = [].slice.call(arguments);
 
     return {
         func: 'select',
         res: function (collection) {
-            for (var i = 0; i < collection.length; i++) {
-                remarkCol = {};
-                for (var key in collection[i]) {
-                    if (fields.indexOf(key) !== -1) {
-                        remarkCol[key] = collection[i][key];
-                    }
-                }
-                selectedCol.push(remarkCol);
-            }
 
-            return selectedCol;
+            return copyCollection(collection, fields);
         }
     };
 };
+
+function copyCollection (collection, fields) {
+
+    var remarkCol;
+    var selectedCol = [];
+
+    for (var i = 0; i < collection.length; i++) {
+        remarkCol = {};
+        for (var key in collection[i]) {
+            if (fields.indexOf(key) !== -1) {
+                remarkCol[key] = collection[i][key];
+            }
+        }
+        selectedCol.push(remarkCol);
+    }
+
+    return selectedCol;    
+}
 
 /**
  * Фильтрация поля по массиву значений
@@ -76,10 +83,8 @@ exports.filterIn = function (property, values) {
         func: 'filterIn',
         res: function (collection) {
             for (var i = 0; i < collection.length; i++) {
-                if (collection[i][property] !== undefined) {
-                    if (values.indexOf(collection[i][property]) !== -1) {
+                if (collection[i][property] !== undefined && values.indexOf(collection[i][property]) !== -1) {
                         filteredCol.push(collection[i]);
-                    };
                 }
             }
 
@@ -101,13 +106,12 @@ exports.sortBy = function (property, order) {
         func: 'sortBy',
         res: function (collection) {
             collection.sort(function (personaA, personaB) {
-                if (order === 'asc') {
-
-                    return personaA[property] - personaB[property];
-                } else {
+                if (order === 'desc') {
 
                     return personaB[property] - personaA[property];
-                };
+                }
+
+                return personaA[property] - personaB[property];
             });
 
             return collection;
