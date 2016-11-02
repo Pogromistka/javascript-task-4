@@ -40,32 +40,31 @@ exports.query = function (collection) {
 exports.select = function () {
 
     var fields = [].slice.call(arguments);
+    var selectedCol = [];
 
     return {
         func: 'select',
         res: function (collection) {
+            for (var i = 0; i < collection.length; i++) {
+                selectedCol.push(copyNoteCollection(collection[i], fields))
+            }
 
-            return copyCollection(collection, fields);
+            return selectedCol;
         }
     };
 };
 
-function copyCollection (collection, fields) {
+function copyNoteCollection (note, fields) {
 
-    var remarkCol;
-    var selectedCol = [];
+    var remarkCol = {};
 
-    for (var i = 0; i < collection.length; i++) {
-        remarkCol = {};
-        for (var key in collection[i]) {
-            if (fields.indexOf(key) !== -1) {
-                remarkCol[key] = collection[i][key];
-            }
+    for (var key in note) {
+        if (fields.indexOf(key) !== -1) {
+            remarkCol[key] = note[key];
         }
-        selectedCol.push(remarkCol);
     }
 
-    return selectedCol;    
+    return remarkCol;
 }
 
 /**
@@ -83,8 +82,9 @@ exports.filterIn = function (property, values) {
         func: 'filterIn',
         res: function (collection) {
             for (var i = 0; i < collection.length; i++) {
-                if (collection[i][property] !== undefined && values.indexOf(collection[i][property]) !== -1) {
-                        filteredCol.push(collection[i]);
+                if (collection[i][property] !== undefined &&
+                    values.indexOf(collection[i][property]) !== -1) {
+                    filteredCol.push(collection[i]);
                 }
             }
 
