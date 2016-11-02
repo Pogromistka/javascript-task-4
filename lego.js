@@ -178,9 +178,10 @@ if (exports.isStar) {
             func: 'or',
             res: function (collection) {
                 for (var i = 0; i < arg.length; i++) {
-                    resArray = arg[i].res(collection).filter(function (value) {
-                        return resArray.indexOf(value) !== -1;
-                    });
+                    resArray = arg[i].res(collection);
+                    // .filter(function (value) {
+                    //    return resArray.indexOf(value) !== -1;
+                    // });
                     // if (resArray.length !== 0) {
                     //    Array.prototype.push.apply(orCollection, resArray);
                     // }
