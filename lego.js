@@ -74,7 +74,7 @@ function copyNoteCollection(note, fields) {
  * @returns {Object}
  */
 exports.filterIn = function (property, values) {
-    console.info(property, values);
+    // console.info(property, values);
 
     var filteredCol = [];
 
@@ -100,7 +100,7 @@ exports.filterIn = function (property, values) {
  * @returns {Object}
  */
 exports.sortBy = function (property, order) {
-    console.info(property, order);
+    // console.info(property, order);
 
     return {
         func: 'sortBy',
@@ -126,7 +126,7 @@ exports.sortBy = function (property, order) {
  * @returns {Object}
  */
 exports.format = function (property, formatter) {
-    console.info(property, formatter);
+    // console.info(property, formatter);
 
     return {
         func: 'format',
@@ -146,7 +146,7 @@ exports.format = function (property, formatter) {
  * @returns {Object}
  */
 exports.limit = function (count) {
-    console.info(count);
+    // console.info(count);
 
     return {
         func: 'limit',
