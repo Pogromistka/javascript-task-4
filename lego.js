@@ -111,8 +111,8 @@ exports.sortBy = function (property, order) {
                    // return personaB[property] - personaA[property];
                 // }
 
-                return (order === 'asc') ? personaA[property] > personaB[property]:
-                personaA[property] < personaB[property];
+                return (order === 'asc') ? personaA[property] > personaB[property]
+                : personaA[property] < personaB[property];
             });
 
             return collection;
