@@ -6,7 +6,7 @@
  */
 exports.isStar = true;
 
-var assort = ['filterIn', 'sortBy', 'select', 'format', 'limit'];
+var assort = ['filterIn', 'sortBy', 'select', 'limit', 'format'];
 
 /**
  * Запрос к коллекции
@@ -171,7 +171,7 @@ if (exports.isStar) {
     exports.or = function () {
         var resArray;
         var orCollection = [];
-        var arg = arguments;
+        var arg = [].slice.call(arguments);
 
         return {
             func: 'filterIn',
@@ -193,7 +193,7 @@ if (exports.isStar) {
      * @returns {Object}
      */
     exports.and = function () {
-        var arg = arguments;
+        var arg = [].slice.call(arguments);
 
         return {
             func: 'filterIn',
