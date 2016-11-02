@@ -6,7 +6,7 @@
  */
 exports.isStar = true;
 
-var assort = ['or', 'and', 'filterIn', 'sortBy', 'select', 'limit', 'format'];
+var assort = ['and', 'or', 'filterIn', 'sortBy', 'select', 'limit', 'format'];
 
 /**
  * Запрос к коллекции
@@ -202,7 +202,7 @@ if (exports.isStar) {
         return {
             func: 'and',
             res: function (collection) {
-                var andCollection = collection;
+                var andCollection = collection.slice();
                 for (var i = 0; i < arg.length; i++) {
                     andCollection = arg[i].res(andCollection);
                 }
