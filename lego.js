@@ -177,18 +177,20 @@ if (exports.isStar) {
         return {
             func: 'or',
             res: function (collection) {
-                // for (var i = 0; i < arg.length; i++) {
-                //    resArray = arg[i].res(collection);
-                //    // if (resArray.length !== 0) {
-                //    //    Array.prototype.push.apply(orCollection, resArray);
-                //    // }
-                //    orCollection = orCollection.concat(resArray);
-                orCollection = collection.filter(function (element) {
-                    return arg.some(function (iarg) {
-                        return iarg(collection).indexOf(element) !== -1;
+                for (var i = 0; i < arg.length; i++) {
+                    resArray = arg[i].res(collection).filter(function (value) {
+                        return resArray.indexOf(value) !== -1;
                     });
-                });
-                // }
+                    // if (resArray.length !== 0) {
+                    //    Array.prototype.push.apply(orCollection, resArray);
+                    // }
+                    orCollection = orCollection.concat(resArray);
+                // orCollection = collection.filter(function (element) {
+                //    return arg.some(function (iarg) {
+                //        return iarg(collection).indexOf(element) !== -1;
+                //    });
+                // });
+                }
 
                 return orCollection;
             }
