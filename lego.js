@@ -4,7 +4,7 @@
  * Сделано задание на звездочку
  * Реализованы методы or и and
  */
-exports.isStar = false;
+exports.isStar = true;
 
 var assort = ['and', 'or', 'filterIn', 'sortBy', 'select', 'limit', 'format'];
 
