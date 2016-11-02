@@ -6,7 +6,7 @@
  */
 exports.isStar = true;
 
-var assort = ['and', 'or', 'filterIn', 'sortBy', 'select', 'limit', 'format'];
+var assort = ['or', 'and', 'filterIn', 'sortBy', 'select', 'limit', 'format'];
 
 /**
  * Запрос к коллекции
