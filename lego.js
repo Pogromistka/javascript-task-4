@@ -16,7 +16,7 @@ var assort = ['filterIn', 'sortBy', 'select', 'limit', 'format'];
  */
 exports.query = function (collection) {
 
-    var copyCollection = collection;
+    var copyCollection = JSON.parse(JSON.stringify(collection));
     var arg = [].slice.call(arguments);
 
     arg.splice(0, 1);
