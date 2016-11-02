@@ -179,7 +179,10 @@ if (exports.isStar) {
             res: function (collection) {
                 for (var i = 0; i < arg.length; i++) {
                     resArray = arg[i].res(collection);
-                    Array.prototype.push.apply(orCollection, resArray);
+                    // if (resArray.length !== 0) {
+                    //    Array.prototype.push.apply(orCollection, resArray);
+                    // }
+                    orCollection = orCollection.concat(resArray);
                 }
 
                 return orCollection;
