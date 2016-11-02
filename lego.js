@@ -202,7 +202,7 @@ if (exports.isStar) {
         return {
             func: 'filterIn',
             res: function (collection) {
-                var andCollection = collection;
+                var andCollection = JSON.parse(JSON.stringify(collection));
                 for (var i = 0; i < arg.length; i++) {
                     andCollection = arg[i].res(andCollection);
                 }
