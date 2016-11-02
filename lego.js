@@ -6,6 +6,8 @@
  */
 exports.isStar = true;
 
+var assort = ['filterIn', 'sortBy', 'select', 'format', 'limit'];
+
 /**
  * Запрос к коллекции
  * @param {Array} collection
@@ -13,58 +15,145 @@ exports.isStar = true;
  * @returns {Array}
  */
 exports.query = function (collection) {
-    return collection;
+
+    var copyCollection = collection;
+    var arg = [].slice.call(arguments);
+
+    arg.splice(0, 1);
+    arg.sort(function (argA, argB) {
+        return assort.indexOf(argA.func) - assort.indexOf(argB.func);
+    });
+
+    for (var i = 0; i < arg.length; i++) {
+        copyCollection = arg[i].res(copyCollection);
+    }
+
+    return copyCollection;
+    // return collection;
 };
 
 /**
  * Выбор полей
  * @params {...String}
+ * @returns {Object}
  */
 exports.select = function () {
-    return;
+
+    var selectedCol = [];
+    var remarkCol;
+    var fields = [].slice.call(arguments);
+
+    return {
+        func: 'select',
+        res: function (collection) {
+            for (var i = 0; i < collection.length; i++) {
+                remarkCol = {};
+                for (var key in collection[i]) {
+                    if (fields.indexOf(key) !== -1) {
+                        remarkCol[key] = collection[i][key];
+                    }
+                }
+                selectedCol.push(remarkCol);
+            }
+
+            return selectedCol;
+        }
+    };
 };
 
 /**
  * Фильтрация поля по массиву значений
  * @param {String} property – Свойство для фильтрации
  * @param {Array} values – Доступные значения
+ * @returns {Object}
  */
 exports.filterIn = function (property, values) {
     console.info(property, values);
 
-    return;
+    var filteredCol = [];
+
+    return {
+        func: 'filterIn',
+        res: function (collection) {
+            for (var i = 0; i < collection.length; i++) {
+                if (collection[i][property] !== undefined) {
+                    if (values.indexOf(collection[i][property]) !== -1) {
+                        filteredCol.push(collection[i]);
+                    };
+                }
+            }
+
+            return filteredCol;
+        }
+    };
 };
 
 /**
  * Сортировка коллекции по полю
  * @param {String} property – Свойство для фильтрации
  * @param {String} order – Порядок сортировки (asc - по возрастанию; desc – по убыванию)
+ * @returns {Object}
  */
 exports.sortBy = function (property, order) {
     console.info(property, order);
 
-    return;
+    return {
+        func: 'sortBy',
+        res: function (collection) {
+            collection.sort(function (personaA, personaB) {
+                if (order === 'asc') {
+
+                    return personaA[property] - personaB[property];
+                } else {
+
+                    return personaB[property] - personaA[property];
+                };
+            });
+
+            return collection;
+        }
+    };
 };
 
 /**
  * Форматирование поля
  * @param {String} property – Свойство для фильтрации
  * @param {Function} formatter – Функция для форматирования
+ * @returns {Object}
  */
 exports.format = function (property, formatter) {
     console.info(property, formatter);
 
-    return;
+    return {
+        func: 'format',
+        res: function (collection) {
+            for (var i = 0; i < collection.length; i++) {
+                collection[i][property] = formatter(collection[i][property]);
+            }
+
+            return collection;
+        }
+    };
 };
 
 /**
  * Ограничение количества элементов в коллекции
  * @param {Number} count – Максимальное количество элементов
+ * @returns {Object}
  */
 exports.limit = function (count) {
     console.info(count);
 
-    return;
+    return {
+        func: 'limit',
+        res: function (collection) {
+            if (collection.length > count) {
+                collection.splice(count, collection.length - count);
+            }
+
+            return collection;
+        }
+    };
 };
 
 if (exports.isStar) {
@@ -73,17 +162,45 @@ if (exports.isStar) {
      * Фильтрация, объединяющая фильтрующие функции
      * @star
      * @params {...Function} – Фильтрующие функции
+     * @returns {Object}
      */
     exports.or = function () {
-        return;
+        var resArray;
+        var orCollection = [];
+        var arg = arguments;
+
+        return {
+            func: 'filterIn',
+            res: function (collection) {
+                for (var i = 0; i < arg.length; i++) {
+                    resArray = arg[i].res(collection);
+                    Array.prototype.push.apply(orCollection, resArray);
+                }
+
+                return orCollection;
+            }
+        };
     };
 
     /**
      * Фильтрация, пересекающая фильтрующие функции
      * @star
      * @params {...Function} – Фильтрующие функции
+     * @returns {Object}
      */
     exports.and = function () {
-        return;
+        var arg = arguments;
+
+        return {
+            func: 'filterIn',
+            res: function (collection) {
+                var andCollection = collection;
+                for (var i = 0; i < arg.length; i++) {
+                    andCollection = arg[i].res(andCollection);
+                }
+
+                return andCollection;
+            }
+        };
     };
 }
