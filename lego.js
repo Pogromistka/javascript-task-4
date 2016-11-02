@@ -175,7 +175,7 @@ if (exports.isStar) {
         var arg = [].slice.call(arguments);
 
         return {
-            func: 'filterIn',
+            func: 'or',
             res: function (collection) {
                 for (var i = 0; i < arg.length; i++) {
                     resArray = arg[i].res(collection);
@@ -200,9 +200,9 @@ if (exports.isStar) {
         var arg = [].slice.call(arguments);
 
         return {
-            func: 'filterIn',
+            func: 'and',
             res: function (collection) {
-                var andCollection = JSON.parse(JSON.stringify(collection));
+                var andCollection = collection;
                 for (var i = 0; i < arg.length; i++) {
                     andCollection = arg[i].res(andCollection);
                 }
