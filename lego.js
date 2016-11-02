@@ -106,12 +106,13 @@ exports.sortBy = function (property, order) {
         func: 'sortBy',
         res: function (collection) {
             collection.sort(function (personaA, personaB) {
-                if (order === 'desc') {
+                // if (order === 'desc') {
 
-                    return personaB[property] - personaA[property];
-                }
+                   // return personaB[property] - personaA[property];
+                // }
 
-                return personaA[property] - personaB[property];
+                return (order === 'asc') ? personaA[property] > personaB[property]:
+                personaA[property] < personaB[property];
             });
 
             return collection;
