@@ -170,7 +170,7 @@ if (exports.isStar) {
      * @returns {Object}
      */
     exports.or = function () {
-        // var resArray;
+        var resArray;
         var orCollection = [];
         var arg = [].slice.call(arguments);
 
