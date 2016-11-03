@@ -183,23 +183,32 @@ if (exports.isStar) {
         return {
             name: 'or',
             func: function (collection) {
-                for (var i = 0; i < arg.length; i++) {
-                    resArray = arg[i].func(collection);
-                    // .filter(function (value) {
-                    //    return resArray.indexOf(value) !== -1;
-                    // });
-                    // if (resArray.length !== 0) {
-                    //    Array.prototype.push.apply(orCollection, resArray);
-                    // }
-                    orCollection = orCollection.concat(resArray);
-                // orCollection = collection.filter(function (element) {
-                //    return arg.some(function (iarg) {
-                //        return iarg(collection).indexOf(element) !== -1;
-                //    });
-                // });
-                }
+                // for (var i = 0; i < arg.length; i++) {
+                //    resArray = arg[i].func(collection);
+                //    // .filter(function (value) {
+                //    //    return resArray.indexOf(value) !== -1;
+                //    // });
+                //    // if (resArray.length !== 0) {
+                //    //    Array.prototype.push.apply(orCollection, resArray);
+                //    // }
+                //    orCollection = orCollection.concat(resArray);
+                // // orCollection = collection.filter(function (element) {
+                // //    return arg.some(function (iarg) {
+                // //        return iarg(collection).indexOf(element) !== -1;
+                // //    });
+                // // });
+                // }
+                resArray = collection.filter(function (elem) {
+                    return arg.some(function (item) {
+                        return item.func(collection).indexOf(elem) !== -1;
+                    });
+                });
 
-                return orCollection;
+                orCollection = orCollection.concat(resArray);
+
+                return orCollection.slice();
+
+                // return orCollection;
             }
         };
     };
