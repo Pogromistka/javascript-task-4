@@ -6,7 +6,7 @@
  */
 exports.isStar = true;
 
-var assort = ['and', 'or', 'filterIn', 'sortBy', 'select', 'limit', 'format'];
+var priorityFunc = ['and', 'or', 'filterIn', 'sortBy', 'select', 'limit', 'format'];
 
 /**
  * Запрос к коллекции
@@ -20,17 +20,20 @@ exports.query = function (collection) {
     var arg = [].slice.call(arguments);
 
     arg.splice(0, 1);
-    arg.sort(function (argA, argB) {
-        return assort.indexOf(argA.func) - assort.indexOf(argB.func);
-    });
+    arg.sort(sortPriorityFunc);
 
     for (var i = 0; i < arg.length; i++) {
-        copyCollection = arg[i].res(copyCollection);
+        copyCollection = arg[i].func(copyCollection);
     }
 
     return copyCollection;
     // return collection;
 };
+
+function sortPriorityFunc(argA, argB) {
+
+    return priorityFunc.indexOf(argA.name) - priorityFunc.indexOf(argB.name);
+}
 
 /**
  * Выбор полей
@@ -43,8 +46,8 @@ exports.select = function () {
     var selectedCol = [];
 
     return {
-        func: 'select',
-        res: function (collection) {
+        name: 'select',
+        func: function (collection) {
             for (var i = 0; i < collection.length; i++) {
                 selectedCol.push(copyNoteCollection(collection[i], fields));
             }
@@ -79,8 +82,8 @@ exports.filterIn = function (property, values) {
     var filteredCol = [];
 
     return {
-        func: 'filterIn',
-        res: function (collection) {
+        name: 'filterIn',
+        func: function (collection) {
             for (var i = 0; i < collection.length; i++) {
                 if (collection[i][property] !== undefined &&
                     values.indexOf(collection[i][property]) !== -1) {
@@ -103,8 +106,8 @@ exports.sortBy = function (property, order) {
     // console.info(property, order);
 
     return {
-        func: 'sortBy',
-        res: function (collection) {
+        name: 'sortBy',
+        func: function (collection) {
             collection.sort(function (personaA, personaB) {
                 // if (order === 'desc') {
 
@@ -130,8 +133,8 @@ exports.format = function (property, formatter) {
     // console.info(property, formatter);
 
     return {
-        func: 'format',
-        res: function (collection) {
+        name: 'format',
+        func: function (collection) {
             for (var i = 0; i < collection.length; i++) {
                 collection[i][property] = formatter(collection[i][property]);
             }
@@ -150,8 +153,8 @@ exports.limit = function (count) {
     // console.info(count);
 
     return {
-        func: 'limit',
-        res: function (collection) {
+        name: 'limit',
+        func: function (collection) {
             if (collection.length > count) {
                 collection.splice(count, collection.length - count);
             }
@@ -175,10 +178,10 @@ if (exports.isStar) {
         var arg = [].slice.call(arguments);
 
         return {
-            func: 'or',
-            res: function (collection) {
+            name: 'or',
+            func: function (collection) {
                 for (var i = 0; i < arg.length; i++) {
-                    resArray = arg[i].res(collection);
+                    resArray = arg[i].func(collection);
                     // .filter(function (value) {
                     //    return resArray.indexOf(value) !== -1;
                     // });
@@ -208,11 +211,11 @@ if (exports.isStar) {
         var arg = [].slice.call(arguments);
 
         return {
-            func: 'and',
-            res: function (collection) {
+            name: 'and',
+            func: function (collection) {
                 var andCollection = collection.slice();
                 for (var i = 0; i < arg.length; i++) {
-                    andCollection = arg[i].res(andCollection);
+                    andCollection = arg[i].func(andCollection);
                 }
 
                 return andCollection;
