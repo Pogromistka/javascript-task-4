@@ -22,9 +22,12 @@ exports.query = function (collection) {
     arg.splice(0, 1);
     arg.sort(sortPriorityFunc);
 
-    for (var i = 0; i < arg.length; i++) {
-        copyCollection = arg[i].func(copyCollection);
-    }
+    // for (var i = 0; i < arg.length; i++) {
+    //    copyCollection = arg[i].func(copyCollection);
+    // }
+    arg.forEach(function (item) {
+        copyCollection = item.func(copyCollection);
+    });
 
     return copyCollection;
     // return collection;
