@@ -15,7 +15,6 @@ var priorityFunc = ['and', 'or', 'filterIn', 'sortBy', 'select', 'limit', 'forma
  * @returns {Array}
  */
 exports.query = function (collection) {
-
     var copyCollection = JSON.parse(JSON.stringify(collection));
     var arg = [].slice.call(arguments);
 
@@ -44,7 +43,6 @@ function sortPriorityFunc(argA, argB) {
  * @returns {Object}
  */
 exports.select = function () {
-
     var fields = [].slice.call(arguments);
     var selectedCol = [];
 
@@ -61,7 +59,6 @@ exports.select = function () {
 };
 
 function copyNoteCollection(note, fields) {
-
     var remarkCol = {};
 
     for (var key in note) {
@@ -81,7 +78,6 @@ function copyNoteCollection(note, fields) {
  */
 exports.filterIn = function (property, values) {
     // console.info(property, values);
-
     var filteredCol = [];
 
     return {
@@ -158,11 +154,8 @@ exports.limit = function (count) {
     return {
         name: 'limit',
         func: function (collection) {
-            if (collection.length > count) {
-                collection.splice(count, collection.length - count);
-            }
 
-            return collection;
+            return collection.splice(0, count);
         }
     };
 };
