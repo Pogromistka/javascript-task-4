@@ -87,12 +87,18 @@ exports.filterIn = function (property, values) {
     return {
         name: 'filterIn',
         func: function (collection) {
-            for (var i = 0; i < collection.length; i++) {
-                if (collection[i][property] !== undefined &&
-                    values.indexOf(collection[i][property]) !== -1) {
-                    filteredCol.push(collection[i]);
+            // for (var i = 0; i < collection.length; i++) {
+            //    if (collection[i][property] !== undefined &&
+            //        values.indexOf(collection[i][property]) !== -1) {
+            //        filteredCol.push(collection[i]);
+            //    }
+            // }
+            collection.forEach(function (item) {
+                if (item[property] !== undefined && values.indexOf(item[property]) !== -1) {
+                    filteredCol.push(item);
                 }
             }
+            );
 
             return filteredCol;
         }
@@ -138,9 +144,13 @@ exports.format = function (property, formatter) {
     return {
         name: 'format',
         func: function (collection) {
-            for (var i = 0; i < collection.length; i++) {
-                collection[i][property] = formatter(collection[i][property]);
+            // for (var i = 0; i < collection.length; i++) {
+            //    collection[i][property] = formatter(collection[i][property]);
+            // }
+            collection.forEach(function (item) {
+                item[property] = formatter(item[property]);
             }
+            );
 
             return collection;
         }
