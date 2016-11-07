@@ -233,9 +233,13 @@ if (exports.isStar) {
             name: 'and',
             func: function (collection) {
                 var andCollection = collection.slice();
-                for (var i = 0; i < arg.length; i++) {
-                    andCollection = arg[i].func(andCollection);
+                // for (var i = 0; i < arg.length; i++) {
+                //    andCollection = arg[i].func(andCollection);
+                // }
+                arg.forEach(function (item) {
+                    andCollection = item.func(andCollection);
                 }
+                );
 
                 return andCollection;
             }
