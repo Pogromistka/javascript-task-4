@@ -51,7 +51,7 @@ exports.select = function () {
         func: function (collection) {
             // for (var i = 0; i < collection.length; i++) {
             //    selectedCol.push(copyNoteCollection(collection[i], fields));
-            //}
+            // }
             collection.forEach(function (item) {
                 selectedCol.push(copyNoteCollection(item, fields));
             }
