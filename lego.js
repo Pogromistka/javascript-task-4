@@ -49,9 +49,13 @@ exports.select = function () {
     return {
         name: 'select',
         func: function (collection) {
-            for (var i = 0; i < collection.length; i++) {
-                selectedCol.push(copyNoteCollection(collection[i], fields));
+            // for (var i = 0; i < collection.length; i++) {
+            //    selectedCol.push(copyNoteCollection(collection[i], fields));
+            //}
+            collection.forEach(function (item) {
+                selectedCol.push(copyNoteCollection(item, fields));
             }
+            );
 
             return selectedCol;
         }
@@ -155,7 +159,7 @@ exports.limit = function (count) {
         name: 'limit',
         func: function (collection) {
 
-            return collection.splice(0, count);
+            return collection.slice(0, count);
         }
     };
 };
