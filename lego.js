@@ -15,8 +15,12 @@ var priorityFunc = ['and', 'or', 'filterIn', 'sortBy', 'select', 'limit', 'forma
  * @returns {Array}
  */
 exports.query = function (collection) {
-    var copyCollection = Object.assign({}, collection);
+    var copyCollection = [];
     var arg = [].slice.call(arguments);
+
+    copyCollection = collection.map(function (item) {
+        return item;
+    });
 
     arg.splice(0, 1);
     arg.sort(sortPriorityFunc);
