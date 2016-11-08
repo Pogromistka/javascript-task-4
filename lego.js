@@ -18,7 +18,7 @@ exports.query = function (collection) {
     var copyCollection = [];
     var arg = [].slice.call(arguments);
 
-    copyCollection = collection.map(function (item) {
+    copyCollection = collection.forEach(function (item) {
         var note = {};
 
         return Object.keys(item).forEach(function (key) {
