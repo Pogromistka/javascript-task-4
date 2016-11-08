@@ -15,7 +15,7 @@ var priorityFunc = ['and', 'or', 'filterIn', 'sortBy', 'select', 'limit', 'forma
  * @returns {Array}
  */
 exports.query = function (collection) {
-    var copyCollection = JSON.parse(JSON.stringify(collection));
+    var copyCollection = Object.assign({}, collection);
     var arg = [].slice.call(arguments);
 
     arg.splice(0, 1);
