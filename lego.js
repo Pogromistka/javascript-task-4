@@ -20,6 +20,7 @@ exports.query = function (collection) {
 
     copyCollection = collection.map(function (item) {
         var note = {};
+
         return Object.keys(item).forEach(function (key) {
             note[key] = item[key];
         });
