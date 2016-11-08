@@ -18,12 +18,12 @@ exports.query = function (collection) {
     var copyCollection = [];
     var arg = [].slice.call(arguments);
 
-    copyCollection = collection.forEach(function (item) {
+    collection.forEach(function (item) {
         var note = {};
-
-        return Object.keys(item).forEach(function (key) {
+        Object.keys(item).forEach(function (key) {
             note[key] = item[key];
         });
+        copyCollection.push(note);
     });
 
     arg.splice(0, 1);
